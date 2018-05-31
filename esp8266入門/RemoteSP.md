@@ -75,21 +75,25 @@ nodeMCU接線圖
 
 使用函式庫 :
 
+        #include <ESP8266HTTPClient.h>
         #include <ESP8266WiFi.h>
-        #include <WiFiClient.h>
-        #include <ESP8266WebServer.h>
-        #include <ESP8266mDNS.h>
+        #include <ArduinoJson.h>
+        #include <PubSubClient.h>
 
 記得改ssid :
 
         
     const char* ssid = "........";
     const char* password = "........";
+    char serverAddress[] = "http://############.com";
+
 
 記得定義腳位 :
 
         
     #define AC110PIN 4     // Connect ed to Pin D2 in NodeMCU
+
+
 
 
 
@@ -102,6 +106,32 @@ add code :
     ++      digitalWrite(AC110PIN, HIGH);
         });
       
+
+void httpPOST(int value) {
+  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+
+    HTTPClient http;    //Declare object of class HTTPClient
+
+    http.begin("http://############.com/postjson");      //Specify request destination
+    http.addHeader("Content-Type", "application/json");  //Specify content-type header
+
+    int httpCode = http.POST(JSONmessageBuffer);   //Send the request
+    String payload = http.getString();                                        //Get the response payload
+    Serial.print("httpCode:");   //Print HTTP return code
+    Serial.println(httpCode);   //Print HTTP return code
+    Serial.print("payload:");   //Print HTTP return code
+    Serial.println(payload);    //Print request response payload
+    /*
+      Serial.println(WiFi.macAddress());
+
+    */
+    http.end();  //Close connection
+  }
+  else {
+    Serial.println("Error in WiFi connection");
+  }
+  delay(3000);   //Send a request every 30 seconds
+}
 
 
 
