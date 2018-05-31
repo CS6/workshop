@@ -69,7 +69,7 @@ NodeMcu-CH340
 nodeMCU接線圖
 -----------------
 <p align="center">
-      <img src="img/smartplug.png" alt="CH340"/>
+      <img src="/img/smartplug.png" alt="smartplug"/>
 </p>
 
 
